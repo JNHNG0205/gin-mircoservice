@@ -18,8 +18,3 @@ blocks:
             - cache restore
             - go mod vendor
             - cache store
-  - name: 'Block #2'
-    task:
-      jobs:
-        - name: 'Job #1'
-          commands: []
