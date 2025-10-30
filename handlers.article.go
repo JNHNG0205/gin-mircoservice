@@ -10,18 +10,11 @@ import (
 func showIndexPage(c *gin.Context) {
 	articles := getAllArticles()
 
-	// call the HTML method of the Context to render a template
-	c.HTML(
-		// set the status to 200 (OK)
-		http.StatusOK,
-		// Use the index.html template
-		"index.html",
-		// pass the data that the page needs
-		gin.H{
-			"title":   "Home Page",
-			"payload": articles,
-		},
-	)
+	// Call the render function with the name of the template to render
+	render(c, gin.H{
+		"title":   "Home Page",
+		"payload": articles,
+	}, "index.html")
 }
 
 func getArticle(c *gin.Context) {
@@ -48,5 +41,20 @@ func getArticle(c *gin.Context) {
 	} else {
 		// If the article ID is not valid, abort with the error
 		c.AbortWithStatus(http.StatusNotFound)
+	}
+}
+
+func render(c *gin.Context, data gin.H, templateName string) {
+
+	switch c.Request.Header.Get("Accept") {
+	case "application/json":
+		// respond with JSON
+		c.JSON(http.StatusOK, data["payload"])
+	case "application/xml":
+		// respond with XML
+		c.XML(http.StatusOK, data["payload"])
+	default:
+		// respond with HTML
+		c.HTML(http.StatusOK, templateName, data)
 	}
 }
