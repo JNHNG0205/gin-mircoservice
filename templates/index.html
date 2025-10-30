@@ -2,4 +2,14 @@
 
 <h1>Hello Gin!</h1>
 
+<!-- iterate over the payload and display the articles -->
+{{range .payload}}
+
+<a href="/article/view/{{.ID}}">
+    <h2>{{.Title}}</h2>
+</a>
+
+<p>{{.Content}}</p>
+{{end}}
+
 {{ template "footer.html" . }}
